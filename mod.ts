@@ -34,7 +34,9 @@ export const $Import: SlothImport = async function <T>(
 
       if (fileInfo.isFile) {
         const mod = await importFile<T>(url, options);
-        imports[url.href] = mod;
+        if(mod) {
+          imports[url.href] = mod;
+        }
       }
 
       if (fileInfo.isDirectory) {

@@ -22,7 +22,9 @@ export async function importDirectory<T>(
     if (entry.isFile) {
       const task = importFile<T>(entryUrl, options)
         .then((mod) => {
-          result[entryUrl.href] = mod;
+          if(mod) {
+            result[entryUrl.href] = mod;
+          }
         })
         .catch((err) => {
           if (isExtensionError(err)) {
@@ -41,7 +43,9 @@ export async function importDirectory<T>(
         .then((stat) => {
           if (stat.isFile) {
             return importFile<T>(mainFile, options).then((mod) => {
-              result[mainFile.href] = mod;
+              if(mod) {
+                result[mainFile.href] = mod;
+              }
             });
           }
         })

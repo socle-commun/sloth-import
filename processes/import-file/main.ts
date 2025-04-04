@@ -9,12 +9,13 @@ import { log } from "../log/main.ts";
 export async function importFile<T>(
   fileUrl: URL,
   options?: SlothImportOptions<T>,
-): Promise<T> {
+): Promise<T | void> {
   const ext = fileUrl.pathname.split(".").pop();
   const allow = options?.allow ?? config.allow ?? ["ts", "js"];
 
   if (!ext || !allow.includes(ext as SlothImportAllowedExtension)) {
     log(`Ignore file: ${fileUrl}`);
+    return;
   }
 
   let mod: unknown;

@@ -21,7 +21,9 @@ export async function importDirectory<T>(
     if (entry.isFile) {
       try {
         const mod = await importFile<T>(entryUrl, options);
-        result[entryUrl.href] = mod;
+        if(mod) {
+          result[entryUrl.href] = mod;
+        }
       } catch (err) {
         if (isExtensionError(err)) {
           log(`Skipping file with disallowed extension: ${entryUrl}`);
@@ -38,7 +40,9 @@ export async function importDirectory<T>(
         const stat = await Deno.stat(mainFile);
         if (stat.isFile) {
           const mod = await importFile<T>(mainFile, options);
-          result[mainFile.href] = mod;
+          if(mod) {
+            result[mainFile.href] = mod;
+          }
         }
       } catch (err) {
         if (err instanceof Deno.errors.NotFound) {
