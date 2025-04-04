@@ -30,3 +30,12 @@ Deno.test("importDirectory - appelle le callback pour chaque fichier", async () 
 
   assertEquals(calls.length, 2);
 });
+
+Deno.test("resolvePaths - Gère les chemins ambigus", async () => {
+  const dir = new URL("../../_fixtures/folder", import.meta.url);
+  const calls: unknown[] = [];
+
+  await importDirectory(dir);
+
+  // ne doit pas planter
+});

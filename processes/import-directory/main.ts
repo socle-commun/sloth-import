@@ -11,18 +11,24 @@ export async function importDirectory<T>(
   dirUrl: URL,
   options?: SlothImportOptions<T>,
 ): Promise<Record<string, T>> {
+
+  // 🛠️ S'assure que dirUrl termine par un slash pour les URLs de fichiers
+  if (!dirUrl.pathname.endsWith("/")) {
+    dirUrl = new URL(dirUrl.pathname + "/", dirUrl);
+  }
+
   const result: Record<string, T> = {};
   const entryFileName = options?.entryFileName ?? config.entryFileName ?? "main.ts";
   const tasks: Promise<void>[] = [];
 
   for await (const entry of Deno.readDir(dirUrl)) {
-    const entryUrl = new URL(entry.name, dirUrl);
+    const entryUrl = new URL(`./${entry.name}`, dirUrl);
 
     // 📄 Fichier simple
     if (entry.isFile) {
       const task = importFile<T>(entryUrl, options)
         .then((mod) => {
-          if(mod) {
+          if (mod) {
             result[entryUrl.href] = mod;
           }
         })
@@ -38,12 +44,12 @@ export async function importDirectory<T>(
 
     // 📁 Sous-dossier contenant potentiellement un main.ts
     if (entry.isDirectory) {
-      const mainFile = new URL(`${entry.name}/${entryFileName}`, dirUrl);
+      const mainFile = new URL(`./${entry.name}/${entryFileName}`, dirUrl);
       const task = Deno.stat(mainFile)
         .then((stat) => {
           if (stat.isFile) {
             return importFile<T>(mainFile, options).then((mod) => {
-              if(mod) {
+              if (mod) {
                 result[mainFile.href] = mod;
               }
             });
