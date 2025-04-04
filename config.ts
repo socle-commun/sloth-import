@@ -7,4 +7,5 @@ import type { SlothImportConfiguration } from "./types.ts";
 export const config: SlothImportConfiguration = {
   logging: false,
   entryFileName: undefined,
+  ignore: ["**/*.test.ts"],
 };

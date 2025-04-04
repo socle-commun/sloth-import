@@ -5,6 +5,7 @@ export interface SlothImportOptions<T> {
   entryFileName?: string;
   /** Extensions autorisées lors de l'importation de fichiers */
   allow?: SlothImportAllowedExtension[];
+  ignore?: string[];
 }
 
 export type SlothImport = {
@@ -23,6 +24,7 @@ export interface SlothImportConfiguration {
   entryFileName?: string;
   /** Extensions autorisées lors de l'importation de fichiers */
   allow?: SlothImportAllowedExtension[]
+  ignore?: string[];
 }
 
 export type SlothImportAllowedExtension = "ts" | "mts" | "js" | "jsx" | "tsx";
