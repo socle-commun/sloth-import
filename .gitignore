@@ -1,0 +1,11 @@
+.cache
+.dvm
+.local
+.npm
+.ssh
+.dist
+node_modules
+.dev
+coverage
+logs
+.env
