@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - '**'
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  validate:
+    name: Validate (lint + test)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Lint code
+        run: deno lint
+
+      - name: Run tests (CI)
+        run: deno task test:ci
+
+      - name: Handle coverage
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          echo "Uploading coverage for develop branch"
+        # Upload coverage reports
+      - name: Upload JUnit Test Report
+        if: github.ref == 'refs/heads/develop'
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-report
+          path: ./.dist/report.xml
+
+      - name: Upload Coverage Report
+        if: github.ref == 'refs/heads/develop'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: ./.coverage/
+
+      - name: Show coverage summary
+        if: github.ref != 'refs/heads/develop'
+        run: deno coverage

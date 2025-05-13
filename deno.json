@@ -1,7 +1,8 @@
 {
-    "importMap": "./import_map.json",
     "tasks": {
       "test": "deno test --allow-all --coverage=coverage",
+      "test:dev": "deno test --allow-all --watch",
+      "test:ci": "deno test --allow-all  --coverage=coverage",
       "lint": "deno lint",
       "fmt": "deno fmt"
     },

@@ -12,18 +12,12 @@ export async function importDirectory<T>(
   options?: SlothImportOptions<T>,
 ): Promise<Record<string, T>> {
 
-  // 🛠️ S'assure que dirUrl termine par un slash pour les URLs de fichiers
-  if (!dirUrl.pathname.endsWith("/")) {
-    dirUrl = new URL(dirUrl.pathname + "/", dirUrl);
-  }
-
   const result: Record<string, T> = {};
-  const entryFileName = options?.entryFileName ?? config.entryFileName ?? "main.ts";
+  const entryFileName = options?.entryFileName || config.entryFileName || "mod.ts";
   const tasks: Promise<void>[] = [];
 
   for await (const entry of Deno.readDir(dirUrl)) {
     const entryUrl = new URL(`./${entry.name}`, dirUrl);
-
     // 📄 Fichier simple
     if (entry.isFile) {
       const task = importFile<T>(entryUrl, options)
@@ -42,7 +36,7 @@ export async function importDirectory<T>(
       tasks.push(task);
     }
 
-    // 📁 Sous-dossier contenant potentiellement un main.ts
+    // 📁 Sous-dossier contenant potentiellement un mod.ts
     if (entry.isDirectory) {
       const mainFile = new URL(`./${entry.name}/${entryFileName}`, dirUrl);
       const task = Deno.stat(mainFile)
@@ -61,7 +55,7 @@ export async function importDirectory<T>(
           } else if (isExtensionError(err)) {
             log(`Subdir entry file has disallowed extension: ${mainFile}`);
           } else {
-            throw err;
+            log(`Error while importing subdir entry file: (${mainFile}) cwd: [${Deno.cwd()}]`, err.stack);
           }
         });
       tasks.push(task);

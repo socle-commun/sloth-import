@@ -36,9 +36,10 @@ Deno.test("importFile - appelle le callback si fourni", async () => {
   let called = false;
 
   await importFile<{ ok: boolean }>(url, {
-    callback: async (mod) => {
+    callback: (mod) => {
       called = true;
       assertEquals(mod.ok, true);
+      return Promise.resolve();
     },
   });
 

@@ -30,6 +30,6 @@ Deno.test("importDirectory - importe tout si aucun fichier ne correspond aux pat
   assertObjectMatch(mods, {
     [new URL("../../_fixtures/entrydir/a.ts", import.meta.url).href]: { id: 1 },
     [new URL("../../_fixtures/entrydir/b.ts", import.meta.url).href]: { id: 2 },
-    [new URL("../../_fixtures/entrydir/sub/main.ts", import.meta.url).href]: { id: 42 },
+    [new URL("../../_fixtures/entrydir/sub/mod.ts", import.meta.url).href]: { id: 42 },
   });
 });
