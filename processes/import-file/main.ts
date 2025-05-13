@@ -16,18 +16,23 @@ export async function importFile<T>(
     return;
   }
 
-  const relPath = fileUrl.pathname; 
+  const relPath = fileUrl.pathname;
   for (const pattern of ignore) {
     const regex = globToRegExp(pattern);
-    
+
     if (regex.test(relPath)) {
       log(`Ignore file (pattern "${pattern}"): ${fileUrl.href}`);
       return;
     }
   }
 
-  log(`Import file: ${fileUrl.href}`);
-  const mod = await import(fileUrl.href);
+  // Cas Deno deploy
+  // @see https://docs.deno.com/deploy/api/dynamic-import/#one-exception---dynamic-specifiers-work-for-same-project-files
+  const root = Deno.cwd().replaceAll(/\\/g, "/");
+  let specifier = fileUrl.pathname.replace(root, "");
+  specifier = specifier.slice(1);
+  log(`Import file: ${`../../${specifier}`}`, '-', fileUrl.pathname);
+  const mod = await import(`../../${specifier}`)
 
   if (options?.callback) await options.callback(mod as T);
   return mod as T;
