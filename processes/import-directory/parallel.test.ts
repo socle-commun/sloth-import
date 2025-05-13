@@ -16,6 +16,6 @@ Deno.test("importDirectory - charge tous les fichiers et sous-dossiers", async (
     }
   
     // Vérifie que les fichiers sont bien ceux attendus
-    assertEquals(keys.map(k => k.split("/").pop()).sort(), ["a.ts", "b.ts", "main.ts"]);
+    assertEquals(keys.map(k => k.split("/").pop()).sort(), ["a.ts", "b.ts", "mod.ts"]);
   });
   

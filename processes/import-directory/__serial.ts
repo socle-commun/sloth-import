@@ -12,7 +12,7 @@ export async function importDirectory<T>(
   options?: SlothImportOptions<T>,
 ): Promise<Record<string, T>> {
   const result: Record<string, T> = {};
-  const entryFileName = options?.entryFileName ?? config.entryFileName ?? "main.ts";
+  const entryFileName = options?.entryFileName ?? config.entryFileName ?? "mod.ts";
 
   for await (const entry of Deno.readDir(dirUrl)) {
     const entryUrl = new URL(entry.name, dirUrl);

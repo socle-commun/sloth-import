@@ -12,22 +12,22 @@ export async function importFile<T>(
   const ignore = options?.ignore ?? config.ignore ?? ["*.test.ts"];
 
   if (!ext || !allow.includes(ext as SlothImportAllowedExtension)) {
-    log(`Ignore file (not allowed): ${fileUrl}`);
+    log(`Ignore file (not allowed): ${fileUrl.href}`);
     return;
   }
 
-  const relPath = fileUrl.pathname; // chemin relatif du fichier
+  const relPath = fileUrl.pathname; 
   for (const pattern of ignore) {
     const regex = globToRegExp(pattern);
     
     if (regex.test(relPath)) {
-      log(`Ignore file (pattern "${pattern}"): ${relPath}`);
+      log(`Ignore file (pattern "${pattern}"): ${fileUrl.href}`);
       return;
     }
   }
 
+  log(`Import file: ${fileUrl.href}`);
   const mod = await import(fileUrl.href);
-  log(`Imported file: ${fileUrl}`);
 
   if (options?.callback) await options.callback(mod as T);
   return mod as T;

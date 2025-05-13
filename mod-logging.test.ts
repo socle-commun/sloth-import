@@ -15,7 +15,7 @@ Deno.test("[Logging] - active les logs (console)", async () => {
     $Import.config.logging = true;
     await $Import(metaUrl, "./_fixtures/simple.ts");
     assert(logs.length > 0);
-    assert(logs.some((args: unknown) => (args as string[]).join(" ").includes("Imported file")));
+    assert(logs.some((args: unknown) => (args as string[]).join(" ").includes("Import file")));
   } finally {
     $Import.config.logging = false;
     console.log = originalConsoleLog;
@@ -32,7 +32,7 @@ Deno.test("[Logging] - utilise une fonction personnalisée", async () => {
   await $Import(metaUrl, "./_fixtures/simple.ts");
 
   assert(customLogs.length > 0);
-  assert(customLogs[0].some((arg) => String(arg).includes("Imported file")));
+  assert(customLogs[0].some((arg) => String(arg).includes("Import file")));
 
   $Import.config.logging = false;
 });

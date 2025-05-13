@@ -10,7 +10,7 @@ import {
 // └─ sub/
 //     └─ main.ts
 
-Deno.test("importDirectory - importe aussi main.ts dans les sous-dossiers", async () => {
+Deno.test("importDirectory - importe aussi mod.ts dans les sous-dossiers", async () => {
   const dir = new URL("../../_fixtures/entrydir/", import.meta.url);
   const result = await importDirectory<{ id: number }>(dir);
 
@@ -18,7 +18,7 @@ Deno.test("importDirectory - importe aussi main.ts dans les sous-dossiers", asyn
 
   const fileA = keys.find((k) => k.endsWith("/entrydir/a.ts"));
   const fileB = keys.find((k) => k.endsWith("/entrydir/b.ts"));
-  const subMain = keys.find((k) => k.endsWith("/entrydir/sub/main.ts"));
+  const subMain = keys.find((k) => k.endsWith("/entrydir/sub/mod.ts"));
 
   assertExists(fileA);
   assertExists(fileB);

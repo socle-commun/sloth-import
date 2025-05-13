@@ -1,3 +1,4 @@
+import { config } from "../../config.ts";
 import { importDirectory } from "./main.ts";
 import {
   assertEquals,
@@ -32,9 +33,11 @@ Deno.test("importDirectory - appelle le callback pour chaque fichier", async () 
 });
 
 Deno.test("resolvePaths - Gère les chemins ambigus", async () => {
-  const dir = new URL("../../_fixtures/folder", import.meta.url);
+  const dir = new URL("../../_fixtures/folder/", import.meta.url); 
   const calls: unknown[] = [];
-
+  config.logging = true;
+  console.log(dir.href)
+  
   await importDirectory(dir);
 
   // ne doit pas planter
