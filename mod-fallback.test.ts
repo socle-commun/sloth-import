@@ -1,7 +1,6 @@
 import { $Import } from "./mod.ts";
 import {
-  assertEquals,
-  assertThrows,
+  assertEquals
 } from "https://deno.land/std@0.220.1/assert/mod.ts";
 
 const metaUrl = import.meta.url;

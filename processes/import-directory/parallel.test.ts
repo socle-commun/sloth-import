@@ -1,5 +1,5 @@
 import { importDirectory } from "./main.ts";
-import { assertEquals, assertObjectMatch } from "https://deno.land/std@0.220.1/assert/mod.ts";
+import { assertEquals } from "https://deno.land/std@0.220.1/assert/mod.ts";
 
 Deno.test("importDirectory - charge tous les fichiers et sous-dossiers", async () => {
     const dir = new URL("../../_fixtures/entrydir/", import.meta.url);

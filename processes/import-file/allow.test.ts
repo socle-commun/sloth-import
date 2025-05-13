@@ -1,7 +1,6 @@
 import { importFile } from "./main.ts";
 import {
-  assertEquals,
-  assertRejects,
+  assertEquals
 } from "https://deno.land/std@0.220.1/assert/mod.ts";
 
 Deno.test("importFile - autorise les extensions valides", async () => {

@@ -10,7 +10,7 @@ Deno.test("[Comportement par défaut] - import simple fichier", async () => {
 
 Deno.test("[Comportement par défaut] - import dossier", async () => {
   const mods = await $Import<Record<string, { id: number }>>(metaUrl, "./_fixtures/folder/");
-  
+
   const aKey = Object.keys(mods).find((k) => /_fixtures\/folder\/a\.ts$/.test(k));
   const bKey = Object.keys(mods).find((k) => /_fixtures\/folder\/b\.ts$/.test(k));
 
@@ -23,7 +23,10 @@ Deno.test("[Comportement par défaut] - import dossier", async () => {
 Deno.test("[Comportement par défaut] - callback est appelé", async () => {
   const calls: unknown[] = [];
   await $Import(metaUrl, "./_fixtures/simple.ts", {
-    callback: async (mod: { value: string }) => { calls.push(mod) },
+    callback: (mod: { value: string }) => {
+      calls.push(mod);
+      return Promise.resolve();
+    },
   });
   assertEquals(calls.length, 1);
   assertEquals((calls[0] as { value: string }).value, "simple");
@@ -41,7 +44,7 @@ Deno.test("[Comportement par défaut] - fallback est utilisé sur erreur", async
 });
 
 Deno.test("[Comportement par défaut] - multiple fichiers + dossiers", async () => {
-  const mods = await $Import<any>(metaUrl, [
+  const mods = await $Import<object>(metaUrl, [
     "./_fixtures/simple.ts",
     "./_fixtures/folder/",
   ]);

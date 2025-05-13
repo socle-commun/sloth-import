@@ -26,7 +26,7 @@ Deno.test("importDirectory - appelle le callback pour chaque fichier", async () 
   const calls: unknown[] = [];
 
   await importDirectory(dir, {
-    callback: async (mod) => {calls.push(mod)},
+    callback: (mod) => {calls.push(mod); return Promise.resolve();},
   });
 
   assertEquals(calls.length, 2);
@@ -34,7 +34,6 @@ Deno.test("importDirectory - appelle le callback pour chaque fichier", async () 
 
 Deno.test("resolvePaths - Gère les chemins ambigus", async () => {
   const dir = new URL("../../_fixtures/folder/", import.meta.url); 
-  const calls: unknown[] = [];
   config.logging = true;
   console.log(dir.href)
   
