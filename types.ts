@@ -6,6 +6,8 @@ export interface SlothImportOptions<T> {
   /** Extensions autorisées lors de l'importation de fichiers */
   allow?: SlothImportAllowedExtension[];
   ignore?: string[];
+  /** Fonction d'importation personnalisée */
+  importCallback?: (specifier: string) => Promise<T>;
 }
 
 export type SlothImport = {
@@ -25,6 +27,8 @@ export interface SlothImportConfiguration {
   /** Extensions autorisées lors de l'importation de fichiers */
   allow?: SlothImportAllowedExtension[]
   ignore?: string[];
+  /** Fonction d'importation personnalisée */
+  importCallback?: (specifier: string) => Promise<unknown>;
 }
 
 export type SlothImportAllowedExtension = "ts" | "mts" | "js" | "jsx" | "tsx";
