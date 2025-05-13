@@ -10,6 +10,7 @@ export async function importFile<T>(
   const ext = fileUrl.pathname.split(".").pop();
   const allow = options?.allow ?? config.allow ?? ["ts", "js"];
   const ignore = options?.ignore ?? config.ignore ?? ["*.test.ts"];
+  const importCallback = options?.importCallback ?? config.importCallback;
 
   if (!ext || !allow.includes(ext as SlothImportAllowedExtension)) {
     log(`Ignore file (not allowed): ${fileUrl.href}`);
@@ -31,8 +32,8 @@ export async function importFile<T>(
   const root = Deno.cwd().replaceAll(/\\/g, "/");
   let specifier = fileUrl.pathname.replace(root, "");
   specifier = specifier.slice(1);
-  log(`Import file: ${`../../${specifier}`}`, '-', fileUrl.pathname);
-  const mod = await import(`../../${specifier}`)
+  log(`Import file: ${specifier}`, '-', fileUrl.pathname);
+  const mod = await (importCallback as (specifier: string) => Promise<unknown>)(specifier);
 
   if (options?.callback) await options.callback(mod as T);
   return mod as T;

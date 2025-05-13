@@ -8,4 +8,5 @@ export const config: SlothImportConfiguration = {
   logging: false,
   entryFileName: undefined,
   ignore: ["**/*.test.ts"],
+  importCallback: (specifier: string) => import(`./${specifier}`)
 };
